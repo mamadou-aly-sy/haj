@@ -1,6 +1,22 @@
 <?php
 session_start();
 require 'database/db.php';
+
+if (isset($_SESSION["PROFIL"]["IDUSER"])) {
+  if ($_SESSION["PROFIL"]["IDUSER"] == 1) {
+    header('Location: src/index_admin.php');
+  } elseif ($_SESSION["PROFIL"]["IDUSER"] == 2) {
+    header('location:./src/index_approviseur.php');
+  } elseif ($_SESSION["PROFIL"]["IDUSER"] == 3) {
+    header('location:./src/index_vendeur.php');
+  } else {
+    echo "error";
+    die();
+  }
+}
+
+
+
 if (!empty($_POST)) {
   if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
     $pseudo = $_POST['pseudo'];

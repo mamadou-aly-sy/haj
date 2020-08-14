@@ -1,7 +1,11 @@
 <?php
 session_start();
 require '../database/db.php';
+if (!isset($_SESSION["PROFIL"])) {
+  header('Location: ../index.php');
+}
 $user = $_SESSION['PROFIL'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
