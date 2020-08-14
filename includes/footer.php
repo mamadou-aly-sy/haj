@@ -1,3 +1,4 @@
+</div>
 <?php if ($user['IDPROFIL'] == 1) : ?>
     <script type="text/babel" src="../js/AdminNav.js"></script>
 <?php elseif ($user['IDPROFIL'] == 2) : ?>
