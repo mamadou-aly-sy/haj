@@ -1,3 +1,12 @@
+<?php
+
+require '../database/db.php';
+
+$requette = 'SELECT IDUSER,NOM,PRENOM,LOGIN,LIBELEPROFIL FROM utilisateur INNER JOIN profil ON utilisateur.IDPROFIL = profil.IDPROFIL';
+$statement = $db->prepare($requette);
+$statement->execute();
+$utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Utilisateurs</h1>
@@ -18,24 +27,26 @@
           <th scope="col">Id</th>
           <th scope="col">Nom</th>
           <th scope="col">Prenom</th>
-          <th scope="col">Profil</th>
-          <th scope="col">Statut</th>
+          <th scope="col">login</th>
+          <th scope="col">profil</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
+    <?php foreach ($utilisateur as $user): ?>
         <tr class="text-center">
-          <td scope="row">1</td>
-          <td>haje</td>
-          <td>malik</td>
-          <td>Administrateur</td>
-          <td class="btn btn-success">Active</td>
+          <td scope="row"><?=$user->IDUSER?></td>
+          <td><?=$user->NOM?></td>
+          <td><?=$user->PRENOM?></td>
+          <td><?=$user->LOGIN?></td>
+          <td><?=$user->LIBELEPROFIL?></td>
           <td class="text-right">
-          <a href=""><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
-          <a href=""><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
+          <a href="modifie_users.php?id=<?=$user->IDUSER;?>"><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
+          <a href="../libs/delete_user.php?id=<?=$user->IDUSER;?>"><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
           </td>
         </tr>
+<?php endforeach;?>
       </tbody>
     </table>
   </div>

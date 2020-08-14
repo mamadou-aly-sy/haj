@@ -1,4 +1,28 @@
 <?php
+if (!empty($_POST)) {
+
+    require_once '../database/db.php';
+    $message = '';
+    if (
+        empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['tel'])
+    ) {
+        $message = 'Veuiller Remplire les champs';
+    } else {
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $tel = $_POST['tel'];
+        $requette = 'INSERT INTO fournisseur (NOM,PRENOM,TEL)
+        VALUE(:nom,:prenom,:tel)';
+        $statement = $db->prepare($requette);
+        if ($statement->execute([
+            ':nom' => $nom, ':prenom' => $prenom, ':tel' => $tel,
+        ])) {
+            header('location:listes_four.php');
+        }
+    }
+}
+?>
+<?php
 require '../includes/header.php';
 ?>
 <div class="mt-4 text-center">
@@ -10,7 +34,7 @@ require '../includes/header.php';
     <h3 class="card-title text-center">Nouveau Fournisseur</h3>
     </div>
       <div class="card-body">
-        <form action="listes_four.php" method="post">
+        <form  method="post">
             <div class="row mb-2 mt-2">
               <div class="col">
               <label for="">Nom</label>
@@ -34,3 +58,4 @@ require '../includes/header.php';
       </div>
   </div>
 </div>
+<?php require '../includes/footer.php'?>

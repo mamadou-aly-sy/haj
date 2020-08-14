@@ -1,3 +1,12 @@
+<?php
+
+require '../database/db.php';
+
+$requette = 'SELECT * FROM fournisseur';
+$statement = $db->prepare($requette);
+$statement->execute();
+$fournisseur = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Fournisseurs</h1>
@@ -24,16 +33,18 @@
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
+        <?php foreach ($fournisseur as $four): ?>
         <tr class="text-center">
-          <td scope="row">1</td>
-          <td>moustapha</td>
-          <td>taleb</td>
-          <td>27273333</td>
+          <td scope="row"><?=$four->IDFOURNISSEUR?></td>
+          <td><?=$four->NOM?></td>
+          <td><?=$four->PRENOM?></td>
+          <td><?=$four->TEL?></td>
           <td class="text-right">
-          <a href=""><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
-          <a href=""><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
+          <a href="modifier_four.php?id=<?=$four->IDFOURNISSEUR?>"><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
+          <a href="../libs/delete_four.php?id=<?=$four->IDFOURNISSEUR?>"><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
           </td>
         </tr>
+        <?php endforeach?>
       </tbody>
     </table>
   </div>

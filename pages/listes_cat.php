@@ -1,3 +1,12 @@
+<?php
+
+require '../database/db.php';
+
+$requette = 'SELECT * FROM categorie';
+$statement = $db->prepare($requette);
+$statement->execute();
+$categorie = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Catégories</h1>
@@ -23,15 +32,17 @@
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
+        <?php foreach ($categorie as $cat): ?>
         <tr class="text-center">
-          <td scope="row">1</td>
-          <td>haje</td>
-          <td>malik</td>
+          <td scope="row"><?=$cat->CODECAT;?></td>
+          <td><?=$cat->NOMCAT;?></td>
+          <td><?=$cat->DESCRIPTION;?></td>
           <td class="text-right">
-          <a href=""><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
-          <a href=""><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
+          <a href="modifier_cat.php?id=<?=$cat->CODECAT;?>"><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
+          <a href="../libs/delete_cat.php?id=<?=$cat->CODECAT;?>"><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
           </td>
         </tr>
+        <?php endforeach?>
       </tbody>
     </table>
   </div>

@@ -1,3 +1,12 @@
+<?php
+
+require '../database/db.php';
+
+$requette = 'SELECT * FROM categorie';
+$statement = $db->prepare($requette);
+$statement->execute();
+$categorie = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Commandes</h1>
@@ -23,15 +32,17 @@
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
+        
         <tr class="text-center">
-          <td scope="row">1</td>
-          <td>2727333</td>
+          <td scope="row"></td>
+          <td></td>
           <td>12/12/2020</td>
           <td class="text-right">
           <a href=""><button class="btn btn-primary"><i class="far fa-edit"></i> Edit</button></a>
           <a href=""><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
           </td>
         </tr>
+        
       </tbody>
     </table>
   </div>

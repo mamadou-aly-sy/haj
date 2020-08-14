@@ -14,10 +14,10 @@ if (!empty($_POST)) {
                 header('location:./src/index_admin.php');
             } else if ($user['IDPROFIL'] == 2) {
                 $_SESSION['PROFIL'] = $user;
-                header('location:./pages/index_approviseur.php');
+                header('location:./src/index_approviseur.php');
             } else if ($user['IDPROFIL'] == 3) {
                 $_SESSION['PROFIL'] = $user;
-                header('location:./pages/index_vendeur.php');
+                header('location:./src/index_vendeur.php');
             }
         } else {
             $erreur = "pseudo ou mot d passe incorrecte";

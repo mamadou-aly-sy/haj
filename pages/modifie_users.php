@@ -1,6 +1,30 @@
 <?php
 require '../includes/header.php';
 ?>
+<?php
+
+require '../database/db.php';
+
+$id = $_GET['id'];
+$requette = 'SELECT * FROM utilisateur WHERE IDUSER = :id';
+$statement = $db->prepare($requette);
+$statement->execute([':id' => $id]);
+$utilisateur = $statement->fetch(PDO::FETCH_OBJ);
+
+if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['login'])
+    && isset($_POST['password']) && isset($_POST['profil'])) {
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+    $profil = $_POST['profil'];
+    $requette = 'UPDATE utilisateur SET NOM = :nom, PRENOM =:prenom, LOGIN =:login, MDP =:password,IDPROFIL =:profil WHERE IDUSER = :id';
+    $statement = $db->prepare($requette);
+    if ($statement->execute([':nom' => $nom, ':prenom' => $prenom, ':login' => $login, ':password' => $password, ':profil' => $profil, ':id' => $id])) {
+        header('location:listes_users.php');
+    }
+}
+?>
 <div class="mt-4 text-center">
 <h1 class="mt-4">Gestion Des Uttilisateurs</h1>
 </div>
@@ -10,34 +34,34 @@ require '../includes/header.php';
     <h3 class="card-title text-center">Modifier Utilisateur</h3>
     </div>
       <div class="card-body">
-        <form action="listes_users.php" method="post">
+        <form action="" method="post">
             <div class="row mb-2 mt-2">
               <div class="col">
               <label for="">Nom</label>
-                <input type="text" name="nom" id="" class="form-control" placeholder="Votre nom" value="<?php $_POST['nom']?>">
+                <input type="text" name="nom"  class="form-control" placeholder="Votre nom" value="<?=$utilisateur->NOM;?>">
               </div>
               <div class="col">
               <label for="">Prenom</label>
-                <input type="text" name="prenom" id="" class="form-control" placeholder="Votre prenom" value="<?php $_POST['prenom']?>">
+                <input type="text" name="prenom"  class="form-control" placeholder="Votre prenom" value="<?=$utilisateur->PRENOM;?>">
               </div>
             </div>
             <div class="row mb-2 mt-2">
               <div class="col">
               <label for="">login</label>
-                <input type="login" name="login" id="" class="form-control" placeholder="Votre login" value="<?php $_POST['login']?>">
+                <input type="login" name="login"  class="form-control" placeholder="Votre login" value="<?=$utilisateur->LOGIN;?>">
               </div>
               <div class="col">
               <label for="">mot de passe</label>
-                <input type="password" name="mot de passe" id="" class="form-control" placeholder="Votre mot de passe" value="<?php $_POST['']?>">
+                <input type="password" name="password"  class="form-control" placeholder="Votre mot de passe" value="<?=$utilisateur->MDP;?>">
               </div>
             </div>
             <div class="row mb-2 mt-2">
               <div class="col">
               <label for="">Profils</label>
-                <select name="profil" id="" class="form-control" value="<?php $_POST['profil']?>">
-                <option value="Administrateur">Administrateur</option>
-                <option value="Approviseur">Approviseur</option>
-                <option value="Vendeur">Vendeur</option>
+                <select name="profil"  class="form-control" value="<?=$utilisateur->IDPROFIL;?>">
+                <option value="1">Administrateur</option>
+                <option value="2">Approviseur</option>
+                <option value="3">Vendeur</option>
                 </select>
               </div>
               <div class="col text-center mt-4">

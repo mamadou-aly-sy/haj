@@ -9,19 +9,11 @@ require '../includes/header.php';
     <div class="card-header">
     <h3 class="card-title text-center">Nouvelle Commande</h3>
       <div class="card-body">
-        <form action="listes_users.php" method="post">
+        <form action="listes_com.php" method="post">
             <div class="row mb-2 mt-2">
               <div class="col">
               <label for="">Nom Client</label>
-                <select name="nom_client" id="" class="form-control">
-                <option value="Administrateur">Administrateur</option>
-                <option value="Approviseur">Approviseur</option>
-                <option value="Vendeur">Vendeur</option>
-                </select>
-              </div>
-              <div class="col">
-              <label for="">date_commande</label>
-                <input type="date" name="date_com" id="" class="form-control">
+                <input type="text" name="nom-client" id="" class="form-control">
               </div>
             </div>
               <div class="col text-center mt-4">
@@ -31,3 +23,4 @@ require '../includes/header.php';
       </div>
   </div>
 </div>
+<?php require '../includes/footer.php'?>
