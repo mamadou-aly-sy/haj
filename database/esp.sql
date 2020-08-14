@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le :  Dim 19 juil. 2020 à 09:06
--- Version du serveur :  10.1.31-MariaDB
--- Version de PHP :  7.2.4
+-- Host: localhost:3306
+-- Generation Time: Aug 14, 2020 at 01:19 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.2.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `esp`
+-- Database: `esp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categorie`
+-- Table structure for table `categorie`
 --
 
 CREATE TABLE `categorie` (
@@ -37,7 +37,7 @@ CREATE TABLE `categorie` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `client`
+-- Table structure for table `client`
 --
 
 CREATE TABLE `client` (
@@ -51,11 +51,11 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `client`
+-- Dumping data for table `client`
 --
 
 INSERT INTO `client` (`NUM_CLIENT`, `NOMCLIENT`, `RAISONSOCIAL`, `FONCTION`, `TEL`, `FAX`, `ADRESS`) VALUES
-(1, 'Sabta', 'Fonctionnaire', 'Professeur', 22345567, 456789, 'pk4533'),
+(1, 'Sabta', 'Fonctionnaire', 'Professeur', 22345568, 456789, 'pk4533'),
 (2, 'Khadija', 'Etudiant', 'Etudiant', 44556543, 45653789, 'Socogime'),
 (3, 'Salka', 'Etat', 'Medecin', 42642225, 234, 'Rosso'),
 (4, 'Salka', 'Etat', 'Etudiant', 22621124, 223344, 'Nouakchott');
@@ -63,19 +63,19 @@ INSERT INTO `client` (`NUM_CLIENT`, `NOMCLIENT`, `RAISONSOCIAL`, `FONCTION`, `TE
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commande`
+-- Table structure for table `commande`
 --
 
 CREATE TABLE `commande` (
   `NUMCOM` int(11) NOT NULL,
   `NUM_CLIENT` int(11) NOT NULL,
-  `DATECOM` date NOT NULL
+  `DATECOM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `contenir`
+-- Table structure for table `contenir`
 --
 
 CREATE TABLE `contenir` (
@@ -87,7 +87,7 @@ CREATE TABLE `contenir` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `fournisseur`
+-- Table structure for table `fournisseur`
 --
 
 CREATE TABLE `fournisseur` (
@@ -97,10 +97,18 @@ CREATE TABLE `fournisseur` (
   `TEL` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `fournisseur`
+--
+
+INSERT INTO `fournisseur` (`IDFOURNISSEUR`, `NOM`, `PRENOM`, `TEL`) VALUES
+(1, 'moustapha', 'taleb', 27272733),
+(2, 'elhadj', 'Ahmed', 37737353);
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `produit`
+-- Table structure for table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -114,7 +122,7 @@ CREATE TABLE `produit` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `profil`
+-- Table structure for table `profil`
 --
 
 CREATE TABLE `profil` (
@@ -122,10 +130,19 @@ CREATE TABLE `profil` (
   `LIBELEPROFIL` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `profil`
+--
+
+INSERT INTO `profil` (`IDPROFIL`, `LIBELEPROFIL`) VALUES
+(1, 'Administrateur'),
+(2, 'Approviseur'),
+(3, 'Vendeur');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateur`
+-- Table structure for table `utilisateur`
 --
 
 CREATE TABLE `utilisateur` (
@@ -138,43 +155,52 @@ CREATE TABLE `utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Index pour les tables déchargées
+-- Dumping data for table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`IDUSER`, `NOM`, `PRENOM`, `LOGIN`, `MDP`, `IDPROFIL`) VALUES
+(1, 'elhadj', 'malick', '3lhj', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 2),
+(2, 'admin', 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
+(3, 'hadrami', 'moustapha', 'hadra', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 3);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `categorie`
+-- Indexes for table `categorie`
 --
 ALTER TABLE `categorie`
   ADD PRIMARY KEY (`CODECAT`);
 
 --
--- Index pour la table `client`
+-- Indexes for table `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`NUM_CLIENT`);
 
 --
--- Index pour la table `commande`
+-- Indexes for table `commande`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`NUMCOM`),
   ADD KEY `FK_COMMANDE2` (`NUM_CLIENT`);
 
 --
--- Index pour la table `contenir`
+-- Indexes for table `contenir`
 --
 ALTER TABLE `contenir`
   ADD PRIMARY KEY (`REFERENCE`,`NUMCOM`),
   ADD KEY `FK_CONT1` (`NUMCOM`);
 
 --
--- Index pour la table `fournisseur`
+-- Indexes for table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`IDFOURNISSEUR`);
 
 --
--- Index pour la table `produit`
+-- Indexes for table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`REFERENCE`),
@@ -182,73 +208,92 @@ ALTER TABLE `produit`
   ADD KEY `FK_FOURNIS4` (`IDFOURNISSEUR`);
 
 --
--- Index pour la table `profil`
+-- Indexes for table `profil`
 --
 ALTER TABLE `profil`
   ADD PRIMARY KEY (`IDPROFIL`);
 
 --
--- Index pour la table `utilisateur`
+-- Indexes for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`IDUSER`),
   ADD KEY `FK_USER` (`IDPROFIL`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `categorie`
+-- AUTO_INCREMENT for table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `CODECAT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `CODECAT` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `client`
+-- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
   MODIFY `NUM_CLIENT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `commande`
+-- AUTO_INCREMENT for table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `NUMCOM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `NUMCOM` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `fournisseur`
+-- AUTO_INCREMENT for table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `IDFOURNISSEUR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDFOURNISSEUR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `produit`
+-- AUTO_INCREMENT for table `produit`
 --
 ALTER TABLE `produit`
   MODIFY `REFERENCE` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `profil`
+-- AUTO_INCREMENT for table `profil`
 --
 ALTER TABLE `profil`
-  MODIFY `IDPROFIL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `IDPROFIL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT pour la table `utilisateur`
+-- AUTO_INCREMENT for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `IDUSER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `IDUSER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `commande`
+-- Constraints for table `commande`
 --
 ALTER TABLE `commande`
-  ADD CONSTRAINT `FK_COMMANDE2` FOREIGN KEY (`NUM_CLIENT`) REFERENCES `client` (`NUM_CLIENT`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_num_client` FOREIGN KEY (`NUM_CLIENT`) REFERENCES `client` (`NUM_CLIENT`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `contenir`
+--
+ALTER TABLE `contenir`
+  ADD CONSTRAINT `fk_num_com_id` FOREIGN KEY (`NUMCOM`) REFERENCES `commande` (`NUMCOM`);
+
+--
+-- Constraints for table `produit`
+--
+ALTER TABLE `produit`
+  ADD CONSTRAINT `fk_fournisseur_id` FOREIGN KEY (`IDFOURNISSEUR`) REFERENCES `fournisseur` (`IDFOURNISSEUR`),
+  ADD CONSTRAINT `fk_id_cat` FOREIGN KEY (`CODECAT`) REFERENCES `categorie` (`CODECAT`);
+
+--
+-- Constraints for table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  ADD CONSTRAINT `fk_profil_id` FOREIGN KEY (`IDPROFIL`) REFERENCES `profil` (`IDPROFIL`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
