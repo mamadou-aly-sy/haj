@@ -16,12 +16,6 @@ $user = $_SESSION['PROFIL'];
   <script src="../js/babel.js"></script>
   <script src="../js/react.js"></script>
   <script src="../js/react-dom.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#dtBasicExample').DataTable();
-      $('.dataTables_length').addClass('bs-select');
-    });
-  </script>
   <title>
     <?php if (isset($title)) : ?>
       <?= $title ?>
@@ -47,22 +41,13 @@ $user = $_SESSION['PROFIL'];
     </div>
     <div class="collapse navbar-collapse">
       <?php if ($user['IDPROFIL'] == 1) : ?>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-items"><a href="../pages/listes_users.php" class="nav-link text-white btn">G. Utilisateurs</a></li>
-          <li class="nav-items"><a href="../pages/listes_cat.php" class="nav-link text-white btn">G. Gatégories</a></li>
-          <li class="nav-items"><a href="../pages/listes_prod.php" class="nav-link text-white btn">G. Produits</a></li>
-          <li class="nav-items"><a href="../pages/listes_four.php" class="nav-link text-white btn">G. Fornisseurs</a></li>
-          <li class="nav-items"><a href="../pages/listes_cli.php" class="nav-link text-white btn">G. Clients</a></li>
-          <li class="nav-items"><a href="../pages/listes_com.php" class="nav-link text-white btn">G. Commandes</a></li>
+        <ul class="navbar-nav mr-auto" id="admin-nav">
         </ul>
       <?php elseif ($user['IDPROFIL'] == 2) : ?>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-items"><a href="../pages/listes_cat.php" class="nav-link text-white btn">G. Gatégories</a></li>
-          <li class="nav-items"><a href="../pages/listes_prod.php" class="nav-link text-white btn">G. Produits</a></li>
-          <li class="nav-items"><a href="../pages/listes_four.php" class="nav-link text-white btn">G. Fornisseurs</a></li>
+        <ul class="navbar-nav mr-auto" id="aproviser-nav">
         </ul>
       <?php elseif ($user['IDPROFIL'] == 3) : ?>
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" id="vender-nav">
           <li class="nav-items"><a href="../pages/listes_cli.php" class="nav-link text-white btn">G. Clients</a></li>
           <li class="nav-items"><a href="../pages/listes_com.php" class="nav-link text-white btn">G. Commandes</a></li>
         </ul>
