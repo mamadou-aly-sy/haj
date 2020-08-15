@@ -1,11 +1,20 @@
+<?php require '../database/db.php';?>
 <?php
 
-require '../database/db.php';
+if (isset($_GET['search'])) {
+    //$message = "";
+    $search = $_GET['search'];
+    $requette = 'SELECT IDUSER,NOM,PRENOM,LOGIN,LIBELEPROFIL FROM utilisateur INNER JOIN profil ON
+    utilisateur.IDPROFIL = profil.IDPROFIL WHERE NOM LIKE :search OR PRENOM LIKE :search OR IDUSER LIKE :search';
+    $statement = $db->prepare($requette);
+    $statement->bindValue(':search', '%' . $search . '%');
+    $statement->execute();
+    $recherche = $statement->fetchAll(PDO::FETCH_OBJ);
 
-$requette = 'SELECT IDUSER,NOM,PRENOM,LOGIN,LIBELEPROFIL FROM utilisateur INNER JOIN profil ON utilisateur.IDPROFIL = profil.IDPROFIL';
-$statement = $db->prepare($requette);
-$statement->execute();
-$utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
+    if (empty($recherche)) {
+        $message = "utilisateur introuvable";
+    }
+}
 ?>
 <?php require '../includes/header.php'?>
 <div class="container">
@@ -21,7 +30,7 @@ $utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_users.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0 " action="search_user.php" method="get">
+          <form class="form-inline my-2 my-lg-0 ">
             <input class="form-control mr-sm-2 mb-1" type="search" name="search" placeholder="Rechercher ici" aria-label="Search">
             <button class="btn btn-outline-warning my-2 my-sm-0 mt-2" type="submit">Rechercher</button>
           </form>
@@ -39,7 +48,7 @@ $utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
-    <?php foreach ($utilisateur as $user): ?>
+    <?php foreach ($recherche as $user): ?>
         <tr class="text-center">
           <td scope="row"><?=$user->IDUSER?></td>
           <td><?=$user->NOM?></td>
