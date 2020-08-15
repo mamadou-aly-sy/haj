@@ -1,11 +1,25 @@
 <?php
-
 require '../database/db.php';
 
 $requette = 'SELECT IDUSER,NOM,PRENOM,LOGIN,LIBELEPROFIL FROM utilisateur INNER JOIN profil ON utilisateur.IDPROFIL = profil.IDPROFIL';
 $statement = $db->prepare($requette);
 $statement->execute();
 $utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
+<?php
+
+if (isset($_GET['search'])) {
+    $search = $_GET['search'];
+    $search = preg_replace("#[^0-9a-z]#i", "", $search);
+    $requette = 'SELECT * FROM utilisateur WHERE NOM LIKE " % $search % " OR IDUSER LIKE " % $search % " OR PRENOM LIKE " % $search % "';
+    $statement = $db->prepare($requette);
+    if (isset($statement->execute)) {
+        echo "recherche introuvanle";
+    } else {
+
+    }
+}
+
 ?>
 <?php require '../includes/header.php'?>
 <div class="container">
@@ -16,8 +30,8 @@ $utilisateur = $statement->fetchAll(PDO::FETCH_OBJ);
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_users.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0 " action="../src/recherche.php">
-            <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher ici"class="fas fa-search" aria-label="Search" name="recherche">
+          <form class="form-inline my-2 my-lg-0 ">
+            <input class="form-control mr-sm-2 mb-1" type="search" name="search" placeholder="Rechercher ici" aria-label="Search">
             <button class="btn btn-outline-warning my-2 my-sm-0 mt-2" type="submit">Rechercher</button>
           </form>
         </div>
