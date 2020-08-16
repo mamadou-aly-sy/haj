@@ -27,7 +27,7 @@ if (isset($_GET['search'])) {
   <?php endif?>
         <div class="collapse nav">
           <ul class="nav mr-auto">
-            <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
+            <li><a href="./listes_users.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_users.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
           <form class="form-inline my-2 my-lg-0 ">

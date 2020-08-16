@@ -2,11 +2,21 @@
 
 require '../database/db.php';
 
-$requette = 'SELECT * FROM fournisseur';
-$statement = $db->prepare($requette);
-$statement->execute();
-$fournisseur = $statement->fetchAll(PDO::FETCH_OBJ);
+if (isset($_GET['search'])) {
+    //$message = "";
+    $search = $_GET['search'];
+    $requette = 'SELECT * FROM fournisseur WHERE IDFOURNISSEUR LIKE :search OR NOM LIKE :search OR PRENOM LIKE :search OR TEL LIKE :search';
+    $statement = $db->prepare($requette);
+    $statement->bindValue(':search', '%' . $search . '%');
+    $statement->execute();
+    $recherche = $statement->fetchAll(PDO::FETCH_OBJ);
+
+    if (empty($recherche)) {
+        $message = "categorie introuvable";
+    }
+}
 ?>
+
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Fournisseurs</h1>
@@ -16,7 +26,7 @@ $fournisseur = $statement->fetchAll(PDO::FETCH_OBJ);
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_four.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0 " action="./search_four.php" method="get">
+          <form class="form-inline my-2 my-lg-0 ">
             <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher ici"class="fas fa-search" aria-label="Search" name="search">
             <button class="btn btn-outline-warning my-2 my-sm-0 mt-2" type="submit">Rechercher</button>
           </form>
@@ -33,7 +43,7 @@ $fournisseur = $statement->fetchAll(PDO::FETCH_OBJ);
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
-        <?php foreach ($fournisseur as $four): ?>
+        <?php foreach ($recherche as $four): ?>
         <tr class="text-center">
           <td scope="row"><?=$four->IDFOURNISSEUR?></td>
           <td><?=$four->NOM?></td>

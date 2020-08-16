@@ -2,21 +2,36 @@
 
 require '../database/db.php';
 
-$requette = 'SELECT * FROM client';
-$statement = $db->prepare($requette);
-$statement->execute();
-$client = $statement->fetchAll(PDO::FETCH_OBJ);
+if (isset($_GET['search'])) {
+    //$message = "";
+    $search = $_GET['search'];
+    $requette = 'SELECT * FROM client WHERE NUM_CLIENT LIKE :search OR NOMCLIENT LIKE :search
+  OR RAISONSOCIAL LIKE :search OR FONCTION LIKE :search OR TEL LIKE :search';
+    $statement = $db->prepare($requette);
+    $statement->bindValue(':search', '%' . $search . '%');
+    $statement->execute();
+    $recherche = $statement->fetchAll(PDO::FETCH_OBJ);
+
+    if (empty($recherche)) {
+        $message = "categorie introuvable";
+    }
+}
 ?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Clients</h1>
   <div class="card-body bg-light">
+  <?php if (!empty($message)): ?>
+  <div class="alert alert-danger">
+  <?=$message?>
+  </div>
+  <?php endif?>
         <div class="collapse nav">
           <ul class="nav mr-auto">
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_cli.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0 " action="./search_cli.php" method="get">
+          <form class="form-inline my-2 my-lg-0 ">
             <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher ici" aria-label="Search" name="search">
             <button class="btn btn-outline-warning my-2 my-sm-0 mt-2" type="submit">Rechercher</button>
           </form>
@@ -36,7 +51,7 @@ $client = $statement->fetchAll(PDO::FETCH_OBJ);
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
-        <?php foreach ($client as $cli): ?>
+        <?php foreach ($recherche as $cli): ?>
         <tr class="text-center">
           <td scope="row"><?=$cli->NUM_CLIENT?></td>
           <td><?=$cli->NOMCLIENT?></td>

@@ -1,22 +1,35 @@
+<?php require '../database/db.php';?>
 <?php
 
-require '../database/db.php';
+if (isset($_GET['search'])) {
+    //$message = "";
+    $search = $_GET['search'];
+    $requette = 'SELECT * FROM categorie WHERE NOMCAT LIKE :search OR CODECAT LIKE :search ';
+    $statement = $db->prepare($requette);
+    $statement->bindValue(':search', '%' . $search . '%');
+    $statement->execute();
+    $recherche = $statement->fetchAll(PDO::FETCH_OBJ);
 
-$requette = 'SELECT * FROM categorie';
-$statement = $db->prepare($requette);
-$statement->execute();
-$categorie = $statement->fetchAll(PDO::FETCH_OBJ);
+    if (empty($recherche)) {
+        $message = "categorie introuvable";
+    }
+}
 ?>
 <?php require '../includes/header.php'?>
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Catégories</h1>
   <div class="card-body bg-light">
+  <?php if (!empty($message)): ?>
+  <div class="alert alert-danger">
+  <?=$message?>
+  </div>
+  <?php endif?>
         <div class="collapse nav">
           <ul class="nav mr-auto">
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
             <li><a href="ajout_cat.php" class="ml-2"><i class="fas fa-user-plus"></i>Ajout</button></a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0 " action="./search_cat.php" method="get">
+          <form class="form-inline my-2 my-lg-0 ">
             <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher ici"class="fas fa-search" aria-label="Search" name="search">
             <button class="btn btn-outline-warning my-2 my-sm-0 mt-2" type="submit">Rechercher</button>
           </form>
@@ -32,7 +45,7 @@ $categorie = $statement->fetchAll(PDO::FETCH_OBJ);
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
-        <?php foreach ($categorie as $cat): ?>
+        <?php foreach ($recherche as $cat): ?>
         <tr class="text-center">
           <td scope="row"><?=$cat->CODECAT;?></td>
           <td><?=$cat->NOMCAT;?></td>
