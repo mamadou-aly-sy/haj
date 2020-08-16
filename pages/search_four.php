@@ -21,6 +21,11 @@ if (isset($_GET['search'])) {
 <div class="container">
 <h1 class="text-center mt-4">Gestion des Fournisseurs</h1>
   <div class="card-body bg-light">
+  <?php if (!empty($message)): ?>
+  <div class="alert alert-danger">
+  <?=$message?>
+  </div>
+  <?php endif?>
         <div class="collapse nav">
           <ul class="nav mr-auto">
             <li><a href="../src/index_admin.php" class="mr-3"><i class="fas fa-home"></i>Acceuil</button></a></li>
