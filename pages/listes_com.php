@@ -32,7 +32,7 @@ $categorie = $statement->fetchAll(PDO::FETCH_OBJ);
       </thead>
       <tbody class="text-black">
         <!-- <div class="alert alert-danger">le champs est vide !!</div> -->
-        
+
         <tr class="text-center">
           <td scope="row"></td>
           <td></td>
@@ -42,7 +42,7 @@ $categorie = $statement->fetchAll(PDO::FETCH_OBJ);
           <a href=""><button class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce employe ?');" ><i class="far fa-trash-alt"></i> Supprimer</button></a>
           </td>
         </tr>
-        
+
       </tbody>
     </table>
   </div>
