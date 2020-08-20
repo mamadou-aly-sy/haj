@@ -11,11 +11,11 @@ if(isset($_GET['id'])&&isset($_GET['produits']))
   $requette='SELECT * FROM produit WHERE REFERENCE = '.$suite_requette;
   $result=$db->prepare($requette);
   $result->execute();
-  $produit=$result->fetchAll(PDO::FETCH_OBJ);
-  echo "<pre>"; 
+  $produits=$result->fetchAll(PDO::FETCH_OBJ);
+  /*echo "<pre>"; 
   print_r($produit);
   echo "</pre>";
-  die();
+  die();*/
 }
 ?>
 <link rel="stylesheet" href="../css/select.css">
@@ -29,22 +29,12 @@ if(isset($_GET['id'])&&isset($_GET['produits']))
       <div class="card-body">
         <form  action="" method="post">
             <div class="row mb-2 mt-2">
-
-              <label for="">Id CLient</label>
-                <select name="idclient" id="" class="form-control">
-                <?php foreach ($client->fetchAll(PDO::FETCH_OBJ) as $client): ?>
-                <option value="<?=$client->NUM_CLIENT?>"><?=$client->NOMCLIENT?></option>
-                <?php endforeach?>
-                </select>
-                <label for="">Produit</label>
-              <select name="produits[]" multiple class="form-control">
-              <?php foreach ($produit->fetchAll(PDO::FETCH_OBJ) as $produit): ?>
-                <option value="<?=$produit->REFERENCE?>"><?=$produit->LIBELLE?></option>
-                <?php endforeach?>
-              </select>
-                <!-- dribbble -->
-              <div class="col text-center mt-4">
-              <input type="submit" name="submit" class="btn btn-primary" value="Soumettre">
+            <?php foreach ($produits as $prod):?>
+            <div>
+            <label for=""><?=$prod->LIBELLE?></label>
+            <input type="number" name="" id="">
+            </div>
+            <?php endforeach;?>
             </div>
         </form>
       </div>
