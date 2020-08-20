@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Aug 14, 2020 at 01:19 PM
--- Server version: 5.7.24
--- PHP Version: 7.2.19
+-- Hôte : localhost
+-- Généré le : ven. 21 août 2020 à 00:23
+-- Version du serveur :  10.4.13-MariaDB
+-- Version de PHP : 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `esp`
+-- Base de données : `esp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorie`
+-- Structure de la table `categorie`
 --
 
 CREATE TABLE `categorie` (
@@ -34,10 +33,17 @@ CREATE TABLE `categorie` (
   `DESCRIPTION` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `categorie`
+--
+
+INSERT INTO `categorie` (`CODECAT`, `NOMCAT`, `DESCRIPTION`) VALUES
+(1, 'boisson', 'naturel');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `client`
+-- Structure de la table `client`
 --
 
 CREATE TABLE `client` (
@@ -51,31 +57,49 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `client`
+-- Déchargement des données de la table `client`
 --
 
 INSERT INTO `client` (`NUM_CLIENT`, `NOMCLIENT`, `RAISONSOCIAL`, `FONCTION`, `TEL`, `FAX`, `ADRESS`) VALUES
-(1, 'Sabta', 'Fonctionnaire', 'Professeur', 22345568, 456789, 'pk4533'),
+(1, 'Sabta', 'Fonctionnaire', 'Professeur', 22345567, 456789, 'pk4533'),
 (2, 'Khadija', 'Etudiant', 'Etudiant', 44556543, 45653789, 'Socogime'),
-(3, 'Salka', 'Etat', 'Medecin', 42642225, 234, 'Rosso'),
 (4, 'Salka', 'Etat', 'Etudiant', 22621124, 223344, 'Nouakchott');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commande`
+-- Structure de la table `commande`
 --
 
 CREATE TABLE `commande` (
   `NUMCOM` int(11) NOT NULL,
   `NUM_CLIENT` int(11) NOT NULL,
-  `DATECOM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `DATECOM` date NOT NULL DEFAULT current_timestamp(),
+  `TOTALE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `commande`
+--
+
+INSERT INTO `commande` (`NUMCOM`, `NUM_CLIENT`, `DATECOM`, `TOTALE`) VALUES
+(1, 1, '2020-08-04', 0),
+(2, 1, '2020-08-20', 0),
+(3, 1, '2020-08-20', 0),
+(4, 1, '2020-08-20', 0),
+(5, 1, '2020-08-20', 0),
+(6, 2, '2020-08-20', 0),
+(7, 2, '2020-08-20', 0),
+(8, 2, '2020-08-20', 0),
+(9, 2, '2020-08-20', 300),
+(10, 2, '2020-08-20', 450),
+(11, 4, '2020-08-20', 300),
+(12, 1, '2020-08-20', 150);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contenir`
+-- Structure de la table `contenir`
 --
 
 CREATE TABLE `contenir` (
@@ -84,10 +108,18 @@ CREATE TABLE `contenir` (
   `REFERENCE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `contenir`
+--
+
+INSERT INTO `contenir` (`NUMCOM`, `PRIX_VENTE`, `REFERENCE`) VALUES
+(7, 7801, 1),
+(1, 15, 12);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fournisseur`
+-- Structure de la table `fournisseur`
 --
 
 CREATE TABLE `fournisseur` (
@@ -98,17 +130,16 @@ CREATE TABLE `fournisseur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `fournisseur`
+-- Déchargement des données de la table `fournisseur`
 --
 
 INSERT INTO `fournisseur` (`IDFOURNISSEUR`, `NOM`, `PRENOM`, `TEL`) VALUES
-(1, 'moustapha', 'taleb', 27272733),
-(2, 'elhadj', 'Ahmed', 37737353);
+(1, 'moustapha', 'taleb', 27273333);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produit`
+-- Structure de la table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -119,10 +150,18 @@ CREATE TABLE `produit` (
   `IDFOURNISSEUR` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `produit`
+--
+
+INSERT INTO `produit` (`REFERENCE`, `LIBELLE`, `PRIX`, `CODECAT`, `IDFOURNISSEUR`) VALUES
+(1, 'riz', 150, 1, 1),
+(2, 'rose', 300, 1, 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profil`
+-- Structure de la table `profil`
 --
 
 CREATE TABLE `profil` (
@@ -131,7 +170,7 @@ CREATE TABLE `profil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `profil`
+-- Déchargement des données de la table `profil`
 --
 
 INSERT INTO `profil` (`IDPROFIL`, `LIBELEPROFIL`) VALUES
@@ -142,7 +181,7 @@ INSERT INTO `profil` (`IDPROFIL`, `LIBELEPROFIL`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateur`
+-- Structure de la table `utilisateur`
 --
 
 CREATE TABLE `utilisateur` (
@@ -155,52 +194,52 @@ CREATE TABLE `utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `utilisateur`
+-- Déchargement des données de la table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`IDUSER`, `NOM`, `PRENOM`, `LOGIN`, `MDP`, `IDPROFIL`) VALUES
-(1, 'elhadj', 'malick', '3lhj', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 2),
-(2, 'admin', 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
-(3, 'hadrami', 'moustapha', 'hadra', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 3);
+(1, 'elhadj', 'malik', '3lhj', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 1),
+(2, 'malik', 'ndiaye', 'malik', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 2),
+(3, 'hadra', '92i', 'hadra', '6afe3227bdc2e95761be0b5568f72eca7eb21de9', 3);
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `categorie`
+-- Index pour la table `categorie`
 --
 ALTER TABLE `categorie`
   ADD PRIMARY KEY (`CODECAT`);
 
 --
--- Indexes for table `client`
+-- Index pour la table `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`NUM_CLIENT`);
 
 --
--- Indexes for table `commande`
+-- Index pour la table `commande`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`NUMCOM`),
   ADD KEY `FK_COMMANDE2` (`NUM_CLIENT`);
 
 --
--- Indexes for table `contenir`
+-- Index pour la table `contenir`
 --
 ALTER TABLE `contenir`
   ADD PRIMARY KEY (`REFERENCE`,`NUMCOM`),
   ADD KEY `FK_CONT1` (`NUMCOM`);
 
 --
--- Indexes for table `fournisseur`
+-- Index pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`IDFOURNISSEUR`);
 
 --
--- Indexes for table `produit`
+-- Index pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`REFERENCE`),
@@ -208,89 +247,89 @@ ALTER TABLE `produit`
   ADD KEY `FK_FOURNIS4` (`IDFOURNISSEUR`);
 
 --
--- Indexes for table `profil`
+-- Index pour la table `profil`
 --
 ALTER TABLE `profil`
   ADD PRIMARY KEY (`IDPROFIL`);
 
 --
--- Indexes for table `utilisateur`
+-- Index pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`IDUSER`),
   ADD KEY `FK_USER` (`IDPROFIL`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `categorie`
+-- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `CODECAT` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `CODECAT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `client`
+-- AUTO_INCREMENT pour la table `client`
 --
 ALTER TABLE `client`
   MODIFY `NUM_CLIENT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `commande`
+-- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `NUMCOM` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `NUMCOM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `fournisseur`
+-- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `IDFOURNISSEUR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDFOURNISSEUR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `produit`
+-- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `REFERENCE` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `REFERENCE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `profil`
+-- AUTO_INCREMENT pour la table `profil`
 --
 ALTER TABLE `profil`
   MODIFY `IDPROFIL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `utilisateur`
+-- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   MODIFY `IDUSER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `commande`
+-- Contraintes pour la table `commande`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `FK_num_client` FOREIGN KEY (`NUM_CLIENT`) REFERENCES `client` (`NUM_CLIENT`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `contenir`
+-- Contraintes pour la table `contenir`
 --
 ALTER TABLE `contenir`
   ADD CONSTRAINT `fk_num_com_id` FOREIGN KEY (`NUMCOM`) REFERENCES `commande` (`NUMCOM`);
 
 --
--- Constraints for table `produit`
+-- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_fournisseur_id` FOREIGN KEY (`IDFOURNISSEUR`) REFERENCES `fournisseur` (`IDFOURNISSEUR`),
   ADD CONSTRAINT `fk_id_cat` FOREIGN KEY (`CODECAT`) REFERENCES `categorie` (`CODECAT`);
 
 --
--- Constraints for table `utilisateur`
+-- Contraintes pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD CONSTRAINT `fk_profil_id` FOREIGN KEY (`IDPROFIL`) REFERENCES `profil` (`IDPROFIL`);
