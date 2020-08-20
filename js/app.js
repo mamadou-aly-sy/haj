@@ -20,7 +20,7 @@ class Footer extends React.Component {
 
   render() {
     return (
-      <footer>
+      <footer className="footer bg-dark fixed-bottom text-center mt-4">
         <p>{this.state.date.toLocaleTimeString()}</p>
         <small>Elhadj@reactjs.org</small>
       </footer>
